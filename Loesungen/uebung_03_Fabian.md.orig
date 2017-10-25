@@ -95,21 +95,13 @@ Richte SQL-Plus so ein, dass möglicht jeder Datensatz nur eine Zeile belegt.
 
 #### Lösung
 ```sql
-<<<<<<< HEAD
 SELECT acc.forename, acc.surname, vt.vehicle_type_name, v.version, v.build_year, p.producer_name, g.gas_name
-=======
-SELECT DISTINCT acc.forename, acc.surname, vt.vehicle_type_name, v.version, v.build_year, p.producer_name, g.gas_name
->>>>>>> Loesungen
 FROM vehicle v 
 INNER JOIN vehicle_type vt ON (v.vehicle_type_id=vt.vehicle_type_id)
 INNER JOIN producer p ON (v.producer_id=p.producer_id)
 INNER JOIN gas g ON (v.default_gas_id=g.gas_id)
-<<<<<<< HEAD
 INNER JOIN ACC_VEHIC av ON v.VEHICLE_ID = av.VEHICLE_ID
 INNER JOIN ACCOUNT acc ON acc.ACCOUNT_ID = av.ACCOUNT_ID;
-=======
-INNER JOIN account acc ON (v.vehicle_id IN (SELECT vehicle_id FROM acc_vehic));
->>>>>>> Loesungen
 
 --Anpassung
 COLUMN forename FORMAT a10;
@@ -180,12 +172,8 @@ FROM vehicle v
 INNER JOIN producer p ON (v.producer_id=p.producer_id)
 INNER JOIN acc_vehic av ON (v.vehicle_id=av.vehicle_id)
 INNER JOIN account a ON (a.account_id=av.account_id)
-<<<<<<< HEAD
 AND av.acc_vehic_id NOT IN (SELECT acc_vehic_id FROM receipt); 
 --WHERE av.acc_vehic_id NOT IN (SELECT acc_vehic_id FROM receipt); 
-=======
-AND a.account_id NOT IN (SELECT account_id FROM receipt); 
->>>>>>> Loesungen
 ```
 
 ### Aufgabe 10
@@ -193,7 +181,6 @@ Liste alle Benutzer auf, die mit einem Fahrzeug schonmal im Außland tanken ware
 
 #### Lösung
 ```sql
-<<<<<<< HEAD
 SELECT a.FORENAME, a.SURNAME
 FROM ACCOUNT a
 INNER JOIN ACC_VEHIC av ON av.ACCOUNT_ID = a.ACCOUNT_ID
@@ -201,9 +188,6 @@ INNER JOIN RECEIPT r ON r.ACCOUNT_ID = a.ACCOUNT_ID
 INNER JOIN GAS_STATION gs ON gs.GAS_STATION_ID = r.GAS_STATION_ID
 WHERE gs.COUNTRY_ID <> (SELECT COUNTRY_ID FROM COUNTRY 
 						WHERE COUNTRY_NAME = 'Deutschland');
-=======
-Deine Lösung
->>>>>>> Loesungen
 ```
 
 ### Aufgabe 11
@@ -220,7 +204,7 @@ INNER JOIN VEHICLE_TYPE vt ON v.VEHICLE_TYPE_ID = vt.VEHICLE_TYPE_ID
 WHERE vt.VEHICLE_TYPE_NAME = 'LKW';
 =======
 ```sql
-SELECT COUNT(a.Account_ID)
+SELECT COUNT(DISTINCT a.Account_ID)
 FROM account a 
 INNER JOIN vehicle v ON (v.vehicle_id IN (Select vehicle_id FROM acc_vehic) 
 					AND (v.vehicle_id IN (SELECT vehicle_type_id FROM vehicle_type WHERE vehicle_type_name = 'LKW')));
@@ -250,7 +234,7 @@ WHERE a.ACCOUNT_ID IN (
       WHERE vt.VEHICLE_TYPE_NAME = 'PKW'
     );
 =======
-SELECT COUNT(a.Account_ID)
+SELECT COUNT(DISTINCT a.Account_ID)
 FROM account a 
 INNER JOIN vehicle v ON (v.vehicle_id IN (Select vehicle_id FROM acc_vehic) 
 					AND (v.vehicle_id IN (SELECT vehicle_type_id FROM vehicle_type WHERE vehicle_type_name = 'LKW' OR vehicle_type_name = 'PKW')));
@@ -262,11 +246,7 @@ Führe den Patch `02_patch.sql`, der sich im Verzeichnis `sql` befindet, in dein
 
 #### Lösung
 ```sql
-<<<<<<< HEAD
 start "...\02_patch.sql" 
-=======
-start "...\02_patch.sql" (Jede menge Errors)
->>>>>>> Loesungen
 ```
 
 ### Aufgabe 14
@@ -274,7 +254,6 @@ Aktualisiere den Steuersatz aller Belege auf den Steuersatz des Landes, indem di
 
 #### Lösung
 ```sql
-<<<<<<< HEAD
 UPDATE RECEIPT r
   SET DUTY_AMOUNT = (
     SELECT c.DUTY_AMOUNT
@@ -293,9 +272,6 @@ UPDATE RECEIPT r
         WHERE gs.GAS_STATION_ID = r.GAS_STATION_ID
       )
   );
-=======
-Problem mit testen, siehe Aufgabe 13
->>>>>>> Loesungen
 ```
 
 
