@@ -194,7 +194,6 @@ WHERE gs.COUNTRY_ID <> (SELECT COUNTRY_ID FROM COUNTRY
 Wie viele Benutzer haben einen LKW registriert?
 
 #### Lösung
-<<<<<<< HEAD
 ```sql					
 SELECT COUNT(DISTINCT a.ACCOUNT_ID)
 FROM ACCOUNT a
@@ -202,13 +201,6 @@ INNER JOIN ACC_VEHIC av ON av.ACCOUNT_ID = a.ACCOUNT_ID
 INNER JOIN VEHICLE v ON v.VEHICLE_ID = av.VEHICLE_ID
 INNER JOIN VEHICLE_TYPE vt ON v.VEHICLE_TYPE_ID = vt.VEHICLE_TYPE_ID
 WHERE vt.VEHICLE_TYPE_NAME = 'LKW';
-=======
-```sql
-SELECT COUNT(DISTINCT a.Account_ID)
-FROM account a 
-INNER JOIN vehicle v ON (v.vehicle_id IN (Select vehicle_id FROM acc_vehic) 
-					AND (v.vehicle_id IN (SELECT vehicle_type_id FROM vehicle_type WHERE vehicle_type_name = 'LKW')));
->>>>>>> Loesungen
 ```
 
 ### Aufgabe 12
@@ -216,7 +208,6 @@ Wie viele Benutzer haben einen PKW und einen LKW registriert?
 
 #### Lösung
 ```sql
-<<<<<<< HEAD
 SELECT COUNT(DISTINCT a.ACCOUNT_ID)
 FROM ACCOUNT a
 WHERE a.ACCOUNT_ID IN (
@@ -233,12 +224,6 @@ WHERE a.ACCOUNT_ID IN (
         INNER JOIN VEHICLE_TYPE vt ON v.VEHICLE_TYPE_ID = vt.VEHICLE_TYPE_ID
       WHERE vt.VEHICLE_TYPE_NAME = 'PKW'
     );
-=======
-SELECT COUNT(DISTINCT a.Account_ID)
-FROM account a 
-INNER JOIN vehicle v ON (v.vehicle_id IN (Select vehicle_id FROM acc_vehic) 
-					AND (v.vehicle_id IN (SELECT vehicle_type_id FROM vehicle_type WHERE vehicle_type_name = 'LKW' OR vehicle_type_name = 'PKW')));
->>>>>>> Loesungen
 ```
 
 ### Aufgabe 13
@@ -258,6 +243,7 @@ UPDATE RECEIPT r
   SET DUTY_AMOUNT = (
     SELECT c.DUTY_AMOUNT
       FROM COUNTRY c
+<<<<<<< HEAD
 	  INNER JOIN gas_station gs ON (c.country_id = gs.country_id)
 	  WHERE gs.gas_station_id = r.gas_station_id 
   );
@@ -266,6 +252,8 @@ UPDATE RECEIPT r
   SET DUTY_AMOUNT = (
     SELECT c.DUTY_AMOUNT
       FROM COUNTRY c
+=======
+>>>>>>> fix:Uebung03
       WHERE c.COUNTRY_ID = (
         SELECT gs.COUNTRY_ID
         FROM GAS_STATION gs
