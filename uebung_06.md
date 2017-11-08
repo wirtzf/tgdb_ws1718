@@ -20,7 +20,9 @@ Wie heißt der Primary Key Contraint der Tabelle `VEHICLE` und für welche Spalt
 
 #### Lösung
 ```sql
-Deine Lösung
+SELECT constraint_name, constraint_type, column_name
+FROM user_constraints NATURAL JOIN user_cons_columns
+WHERE table_name = 'VEHICLE' AND constraint_type='P';
 ```
 
 ### Aufgabe 2
@@ -28,7 +30,10 @@ Für welche Spalte**n** der Tabelle `ACC_VEHIC` wurde ein Foreign Key angelegt u
 
 #### Lösung
 ```sql
-Deine Lösung
+SELECT uc.constraint_name, uc.constraint_type, ucc.table_name, ucc.column_name
+FROM user_constraints uc
+INNER JOIN user_cons_columns ucc ON uc.r_constraint_name=ucc.constraint_name
+WHERE uc.table_name = 'ACC_VEHIC' AND uc.constraint_type='R';  
 ```
 
 ### Aufgabe 3
@@ -36,7 +41,9 @@ Erstelle einen Check Constraint für die Tabelle `ACCOUNT`, dass der Wert der Sp
 
 #### Lösung
 ```sql
-Deine Lösung
+ALTER TABLE ACCOUNT 
+ADD CONSTRAINT c_ucdate CHECK (U_DATE <= C_DATE); 
+check constraint violated FEHLER!!!
 ```
 
 ### Aufgabe 4
@@ -44,7 +51,8 @@ Erstelle einen Check Constraint der überprüft, ob der erste Buchstabe der Spal
 
 #### Lösung
 ```sql
-Deine Lösung
+ALTER TABLE GAS
+ADD constraint c_initcap CHECK (gas_name=initcap(gas_name));
 ```
 
 ### Aufgabe 5
