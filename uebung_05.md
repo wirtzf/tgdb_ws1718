@@ -32,6 +32,7 @@ Der OUTER-JOIN
 
 ![OUTER JOIN](./img/outer-join.gif)
 
+
 ### Aufgabe 2
 Welche Personen haben kein Fahrzeug? Löse dies einmal mit `LEFT JOIN` und `RIGHT JOIN`.
 
