@@ -16,7 +16,7 @@
 Erstelle mit Dia oder einem anderen Werkzeug eine Abbilung der Mengen, die durch `INNER JOIN`, `RIGHT JOIN`, `LEFT JOIN` und `OUTER JOIN` gemeint sind.
 
 #### Lösung
-> Deine Lösung
+
 
 
 
