@@ -18,11 +18,11 @@ Erstelle mit Dia oder einem anderen Werkzeug eine Abbilung der Mengen, die durch
 #### Lösung
 <<<<<<< HEAD
 Der INNER-JOIN
+=======
+
+>>>>>>> update
 
 ![INNER JOIN](./img/inner-join.gif)
-=======
-> Deine Lösung
->>>>>>> fix:Uebung5merge
 
 Der LEFT-JOIN
 
