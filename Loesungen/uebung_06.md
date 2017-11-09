@@ -20,7 +20,9 @@ Wie heißt der Primary Key Contraint der Tabelle `VEHICLE` und für welche Spalt
 
 #### Lösung
 ```sql
-Deine Lösung
+SELECT constraint_name, constraint_type, column_name
+FROM user_constraints NATURAL JOIN user_cons_columns
+WHERE table_name = 'VEHICLE' AND constraint_type='P';
 ```
 
 ### Aufgabe 2
@@ -28,7 +30,10 @@ Für welche Spalte**n** der Tabelle `ACC_VEHIC` wurde ein Foreign Key angelegt u
 
 #### Lösung
 ```sql
-Deine Lösung
+SELECT uc.constraint_name, uc.constraint_type, ucc.table_name, ucc.column_name
+FROM user_constraints uc
+INNER JOIN user_cons_columns ucc ON uc.r_constraint_name=ucc.constraint_name
+WHERE uc.table_name = 'ACC_VEHIC' AND uc.constraint_type='R';  
 ```
 
 ### Aufgabe 3
@@ -36,7 +41,9 @@ Erstelle einen Check Constraint für die Tabelle `ACCOUNT`, dass der Wert der Sp
 
 #### Lösung
 ```sql
-Deine Lösung
+ALTER TABLE ACCOUNT 
+ADD CONSTRAINT c_ucdate CHECK (U_DATE <= C_DATE); 
+check constraint violated FEHLER!!!
 ```
 
 ### Aufgabe 4
@@ -44,7 +51,8 @@ Erstelle einen Check Constraint der überprüft, ob der erste Buchstabe der Spal
 
 #### Lösung
 ```sql
-Deine Lösung
+ALTER TABLE GAS
+ADD constraint c_initcap CHECK (gas_name=initcap(gas_name));
 ```
 
 ### Aufgabe 5
@@ -60,35 +68,4 @@ Erstelle einen Check Contraint der überprüft, ob der Wert der Spalte `IDENTICA
 ```sql
 Deine Lösung
 ```
-
-### Aufgabe 6 - Wiederholung
-Liste für alle Personen den Verbrauch an Kraftstoff auf (Missachte hier die unterschiedlichen Kraftstoffe). Dabei ist interessant, wie viel Liter die einzelne Person getankt hat und wie viel Euro sie für Kraftstoffe ausgegeben hat.
-
-#### Lösung
-```sql
-Deine Lösung
-```
-
-### Aufgabe 7 - Wiederholung
-Liste die Tankstellen absteigend sortiert nach der Kundenanzahl über alle Jahre.
-
-#### Lösung
-```sql
-Deine Lösung
-```
-
-### Aufgabe 8 - Wiederholung
-Erweitere das Datenbankmodell um ein Fahrtenbuch, sowie es Unternehmen für ihren Fuhrpark führen. Dabei ist relevant, welche Person an welchem Tag ab wie viel Uhr ein Fahrzeug für die Reise belegt, wie viele Kilometer zurück gelegt wurden und wann die Person das Fahrzeug wieder abgibt.
-
-Berücksichtige bitte jegliche Constraints!
-
-#### Lösung
-```sql
-Deine Lösung
-```
-
-
-
-
-
 
