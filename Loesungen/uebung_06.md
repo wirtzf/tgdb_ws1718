@@ -20,9 +20,24 @@ Wie heißt der Primary Key Contraint der Tabelle `VEHICLE` und für welche Spalt
 
 #### Lösung
 ```sql
+P = Primary Key
+R = Foreign Key
+U = Unique
+C = CHECK
+
 SELECT constraint_name, constraint_type, column_name
 FROM user_constraints NATURAL JOIN user_cons_columns
 WHERE table_name = 'VEHICLE' AND constraint_type='P';
+
+ODER:
+
+SELECT ucc.constraint_name, ucc.column_name, ucc.position
+FROM user_cons_columns ucc
+WHERE constraint_name IN (SELECT constraint_name 
+						  FROM user_constraints
+						  WHERE table_name LIKE 'VEHICLE'
+						  AND constraint_type = 'P'
+						  );
 ```
 
 ### Aufgabe 2
@@ -42,8 +57,7 @@ Erstelle einen Check Constraint für die Tabelle `ACCOUNT`, dass der Wert der Sp
 #### Lösung
 ```sql
 ALTER TABLE ACCOUNT 
-ADD CONSTRAINT c_ucdate CHECK (U_DATE <= C_DATE); 
-check constraint violated FEHLER!!!
+ADD CONSTRAINT c_ucdate CHECK (U_DATE >= C_DATE); 
 ```
 
 ### Aufgabe 4
@@ -53,6 +67,11 @@ Erstelle einen Check Constraint der überprüft, ob der erste Buchstabe der Spal
 ```sql
 ALTER TABLE GAS
 ADD constraint c_initcap CHECK (gas_name=initcap(gas_name));
+
+ODER:
+
+ALTER TABLE gas
+ADD constraint c_gas_name CHECK (REGEXP_LIKE(gas_name, '^[A-Z].*$', 'c'));
 ```
 
 ### Aufgabe 5
@@ -66,14 +85,29 @@ Erstelle einen Check Contraint der überprüft, ob der Wert der Spalte `IDENTICA
 
 #### Lösung
 ```sql
-Deine Lösung
+ALTER TABLE ACC_VEHIC
+ADD constraint c_kennzeichen CHECK (REGEXP_LIKE(identicator, '^[A-Z]{1,3}:([A-Z]{1,2}:[1-9]{0,3}|[1-9][0,9]{0,5})$', 'c'));
 ```
+
 ### Aufgabe 6 - Wiederholung
 Liste für alle Personen den Verbrauch an Kraftstoff auf (Missachte hier die unterschiedlichen Kraftstoffe). Dabei ist interessant, wie viel Liter die einzelne Person getankt hat und wie viel Euro sie für Kraftstoffe ausgegeben hat.
 
 #### Lösung
 ```sql
-Deine Lösung
+COLUMN SURNAME FORMAT a15
+COLUMN foreNAME FORMAT a15
+
+SELECT acc.surname, acc.forename,
+		(SELECT SUM(re.price_l*re.liter*1+re.duty_amount)
+		 FROM receipt re
+		 WHERE re.account_id = acc.account_id
+		 GROUP BY re.account_id
+		)"Ausgaben",
+		(SELECT SUM(re.liter)
+		 FROM receipt re
+		 WHERE re.account_id = acc.account_id
+		)"Getankte Liter"
+FROM account acc;
 ```
 
 ### Aufgabe 7 - Wiederholung
@@ -81,7 +115,17 @@ Liste die Tankstellen absteigend sortiert nach der Kundenanzahl über alle Jahre
 
 #### Lösung
 ```sql
-Deine Lösung
+SELECT TO_CHAR(r.C_DATE, 'YYYY') "Jahr",
+	   p.provider_name "Provider",
+	   gs.street "Straße",
+	   a.plz "PLZ",
+	   a.city "Stadt",
+	   COUNT(r.account_id) "Anzahl"
+FROM gas_station gs
+INNER JOIN provider p ON (p.provider_id=gs.provider_id)
+INNER JOIN address a ON (a.address_id=gs.address_id)
+INNER JOIN receipt r ON (r.gas_station_id=gs.gas_station_id)
+GROUP BY r.c_date, p.provider_name, gs.street, a.plz, a.city;
 ```
 
 ### Aufgabe 8 - Wiederholung
@@ -91,5 +135,24 @@ Berücksichtige bitte jegliche Constraints!
 
 #### Lösung
 ```sql
-Deine Lösung
+CREATE TABLE LBOOK(
+	LBOOK_ID 		NUMBER(38) NOT NULL,
+	ACCOUNT_ID 		NUMBER(38) NOT NULL,
+	ACC_VEHIC_ID 	NUMBER(38) NOT NULL,
+	B_DATE 			DATE NOT NULL,
+	KILOMETER 		NUMBER(7,3) NOT NULL,
+	S_DATE 			DATE NOT NULL
+);
+
+ALTER TABLE LBOOK
+ADD constraint p_lbook PRIMARY KEY (LBOOK_ID);
+
+ALTER TABLE LBOOK
+ADD constraint r_account FOREIGN KEY (ACCOUNT_ID) REFERENCES ACCOUNT(ACCOUNT_ID);
+
+ALTER TABLE LBOOK
+ADD constraint r_acc_vehic FOREIGN KEY (ACC_VEHIC_ID) REFERENCES ACC_VEHIC(ACC_VEHIC_ID);
+
+ALTER TABLE LBOOK
+ADD constraint c_date CHECK(S_DATE >= B_DATE);
 ```
