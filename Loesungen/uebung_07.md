@@ -196,7 +196,7 @@ Schreibe einen anonymen PL/SQL-Codeblock, der alle deine Fahrzeuge auflistet und
 
 #### Lösung
 ```sql
-/*Wieso kann eine receipt_id zwei vehicle ID haben?*/
+/*Wieso kann eine receipt_id zwei vehicle ID haben?*/ nochmal prüfen
 SELECT acc.forename, acc.account_id, ve.vehicle_id, re.receipt_id
 FROM receipt re
 INNER JOIN account acc ON re.account_id=acc.account_id
@@ -210,7 +210,7 @@ BEGIN
 					INNER JOIN acc_vehic av ON ve.vehicle_id = av.vehicle_id
 					INNER JOIN producer pr ON ve.producer_id = pr.producer_id
 					INNER JOIN account acc ON av.account_id = acc.account_id
-					WHERE acc.forename = 'Max'
+					WHERE acc.account_id = 1
 				) LOOP
 			
     DBMS_OUTPUT.PUT_LINE('Fahrzeug: ' || cur_vh.producer_name || ' Version: ' || cur_vh.version);
